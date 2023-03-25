@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
+            fx:controller="org.roiugit.ProverController">
+    <top>
+        <MenuBar fx:id="menuBar">
+            <Menu text="Proof">
+                <MenuItem text="New" onAction="#newProof"/>
+                <MenuItem text="Load"/>
+            </Menu>
+            <Menu text="Help">
+                <MenuItem text="Rules" onAction="#displayRules"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <TextArea fx:id="proofTextArea" editable="false"/>
+    </center>
+    <bottom>
+        <VBox>
+            <HBox spacing="10">
+                <TextField fx:id="ruleTextField" promptText="Enter rule"/>
+                <Button fx:id="applyRuleButton" text="Enter" onAction="#applyRule"/>
+            </HBox>
+            <Label fx:id="messageLabel"/>
+        </VBox>
+    </bottom>
+</BorderPane>

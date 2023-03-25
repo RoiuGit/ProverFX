@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
+            fx:controller="org.roiugit.RulesController">
+    <center>
+        <TableView fx:id="rulesTableView">
+            <columns>
+                <TableColumn fx:id="ruleNameColumn" text="Rule Name" minWidth="150"/>
+                <TableColumn fx:id="ruleSchemaColumn" text="Rule Schema" minWidth="300"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
