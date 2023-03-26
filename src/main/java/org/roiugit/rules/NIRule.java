@@ -24,10 +24,10 @@ public class NIRule extends Rule {
             Formula affirmation = premises.get(0);
             Formula negation = premises.get(1);
             if (!Objects.equals(affirmation.getSign(), "~") && Objects.equals(negation.getSign(), "~") && affirmation.equals(negation.getAntecedent())) {
-                if (proof.getSubProof() == null && proof.getAssumptionDepth() > 0 || !proof.getSubProof().isNotClosed()) {
+                if ((proof.getSubProof() == null || !proof.getSubProof().isNotClosed()) && proof.getAssumptionDepth() > 0) {
                     result = new Formula("~" + proof.getFormula(0));
                     proof.close();
-                } else result = applyRule(premises, proof.getSubProof());
+                } else if (proof.getSubProof().isNotClosed()) result = applyRule(premises, proof.getSubProof());
             }
         }
         return result;
