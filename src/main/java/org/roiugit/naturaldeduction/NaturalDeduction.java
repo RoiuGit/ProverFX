@@ -31,10 +31,6 @@ public class NaturalDeduction {
         putRule(new DI2Rule());
     }
 
-    public void setMainProof(List<Formula> premises) {
-        this.mainProof = new Proof(premises);
-    }
-
     private void putRule(Rule rule) {
         this.ruleMap.put(rule.getRuleName(), rule);
     }
@@ -50,14 +46,13 @@ public class NaturalDeduction {
         }
     }
 
-    public void toFile(String path, String filename) {
+    public void toFile(File file) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Rule.class, new RuleTypeAdapter().nullSafe())
                 .setPrettyPrinting()
                 .create();
         String json = gson.toJson(mainProof);
         try {
-            File file = new File(path + filename + ".proof");
             FileWriter output = new FileWriter(file);
             output.write(json);
             output.close();
@@ -66,11 +61,10 @@ public class NaturalDeduction {
         }
     }
 
-    public void fromFile(String path, String filename) {
+    public void fromFile(File file) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Rule.class, new RuleTypeAdapter().nullSafe())
                 .create();
-        File file = new File(path + filename + ".proof");
         FileReader input;
         try {
             input = new FileReader(file);
@@ -89,11 +83,6 @@ public class NaturalDeduction {
         return indexes.stream().map(index -> mainProof.getFormula(index - mainProof.getStartingIndex())).collect(Collectors.toList());
     }
 
-    public int getNumPremises(String rule) {
-        Rule ruleInstance = ruleMap.get(rule.toUpperCase());
-        return ruleInstance.getNumPremises();
-    }
-
     public void close() {
         mainProof.close();
     }
@@ -106,10 +95,6 @@ public class NaturalDeduction {
         mainProof.assume(assumption);
     }
 
-    public boolean belongsToClosedProof(int linenumber) {
-        return mainProof.belongsToClosedProof(linenumber);
-    }
-
     public String getResult() {
         return mainProof.getResult();
     }
@@ -120,14 +105,22 @@ public class NaturalDeduction {
                 .map(ruleMap::get).collect(Collectors.toList());
     }
 
-    public List<String> displayRules() {
-        return getRuleList().stream().map(ruleInstance -> ruleInstance.getRuleName() + ":\n" + ruleInstance.getSchema() + "\n").collect(Collectors.toList());
-    }
-
-    public Proof getMainProof(){
+    public Proof getMainProof() {
         return mainProof;
     }
-    public void printProof() {
-        System.out.println(mainProof);
+
+    public void setMainProof(List<Formula> premises) {
+        this.mainProof = new Proof(premises);
+    }
+    public void setMainProof(){
+        this.mainProof = new Proof();
+    }
+
+    public int getStartingIndex() {
+        return mainProof.getStartingIndex();
+    }
+
+    public int getEndingIndex() {
+        return mainProof.getEndingIndex();
     }
 }

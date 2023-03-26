@@ -7,10 +7,11 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
             fx:controller="org.roiugit.ProverController">
     <top>
-        <MenuBar fx:id="menuBar">
-            <Menu text="Proof">
-                <MenuItem text="New" onAction="#newProof"/>
-                <MenuItem text="Load"/>
+        <MenuBar>
+            <Menu text="File">
+                <MenuItem text="New..." onAction="#newProof"/>
+                <MenuItem text="Save..." onAction="#saveProof"/>
+                <MenuItem text="Load..." onAction="#loadProof"/>
             </Menu>
             <Menu text="Help">
                 <MenuItem text="Rules" onAction="#displayRules"/>
@@ -22,9 +23,13 @@
     </center>
     <bottom>
         <VBox>
-            <HBox spacing="10">
-                <TextField fx:id="ruleTextField" promptText="Enter rule"/>
-                <Button fx:id="applyRuleButton" text="Enter" onAction="#applyRule"/>
+            <HBox spacing="10" alignment="CENTER">
+                <ComboBox fx:id="rulesComboBox"/>
+                <HBox fx:id="premisesComboBoxContainer" spacing="5"/>
+                <Button text="Apply Rule" onAction="#applyRule"/>
+                <TextField fx:id="assumptionTextField" promptText="Enter an assumption"/>
+                <Button text="Assume" onAction="#assume"/>
+                <Button text="End Proof" onAction="#endProof"/>
             </HBox>
             <Label fx:id="messageLabel"/>
         </VBox>

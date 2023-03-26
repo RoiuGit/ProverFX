@@ -17,7 +17,12 @@ public class Proof {
     private Proof subProof;
     private int endingIndex;
     private boolean isClosed;
-
+    public Proof(){
+        isClosed = false;
+        assumptionDepth = 0;
+        startingIndex = 1;
+        endingIndex = 0;
+    }
     public Proof(List<Formula> premises) {
         this.premises.addAll(premises);
         this.proofSteps.addAll(ProofStep.toSteps(premises));
@@ -121,14 +126,13 @@ public class Proof {
 
     public String toString() {
         StringBuilder proof = new StringBuilder();
-        int numberFormat = Integer.toString(getEndingIndex()).length();
+        int numberFormat = Integer.toString(getEndingIndex()).length() + 1;
         Optional<Integer> maxFormulaLength = proofSteps.stream().map(ProofStep::getFormula).map(Formula::toString).map(String::length).max(Integer::compareTo);
         Optional<Integer> maxDepth = IntStream.rangeClosed(startingIndex, endingIndex).boxed().toList().stream().map(this::getLineAssumptionDepth).max(Integer::compareTo);
         int formulaFormat = maxFormulaLength.orElse(10) + maxDepth.orElse(0) + 1;
         for (ProofStep proofStep : proofSteps) {
-            proof.append(("%" + numberFormat + "d.").formatted(proofStep.getIndex()));
             int depth = getLineAssumptionDepth(proofStep.getIndex());
-            proof.append(("%-" + formulaFormat + "s %s\n").formatted("|".repeat(Math.max(0, depth)) + " " + proofStep.getFormula(), proofStep.getAnnotation()));
+            proof.append(("%-" + (formulaFormat + numberFormat) + "s%s\n").formatted("%d.%s %s".formatted(proofStep.getIndex(), "|".repeat(Math.max(0, depth)), proofStep.getFormula()), proofStep.getAnnotation()));
         }
 
         return proof.toString();

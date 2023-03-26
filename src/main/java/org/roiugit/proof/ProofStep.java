@@ -44,7 +44,7 @@ public class ProofStep {
     public String getAnnotation() {
         StringBuilder annotation = new StringBuilder();
         if (!isPremise && !isAssumption) {
-            annotation.append(" (").append(ruleApplied).append(":");
+            annotation.append("(").append(ruleApplied).append(":");
             String premisesIndexes = premises.keySet().stream()
                     .map(String::valueOf)
                     .collect(Collectors.joining(", "));
