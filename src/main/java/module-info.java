@@ -1,4 +1,4 @@
-module org.roiugit {
+module proverfx {
     requires javafx.controls;
     requires com.google.gson;
     requires javafx.fxml;

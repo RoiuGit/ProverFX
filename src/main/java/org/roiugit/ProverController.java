@@ -35,9 +35,7 @@ public class ProverController {
 
     public void initialize() {
         prover = new Prover();
-        prover.makeProofDir();
         proofChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Proof files", "*.proof"));
-        proofChooser.setInitialDirectory(new File(prover.getPath()));
         List<String> ruleNames = prover.getRuleInfo().stream().map(RuleInfo::getName).toList();
         rulesComboBox.setItems(FXCollections.observableArrayList(ruleNames));
         rulesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> updatePremisesComboBoxes(newValue));

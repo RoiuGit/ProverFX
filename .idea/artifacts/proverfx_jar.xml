@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="proverfx:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/proverfx_jar</output-path>
-    <root id="archive" name="proverfx.jar">
+    <root id="archive" name="proverfx_jar.jar">
       <element id="module-output" name="proverfx" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/13/javafx-base-13.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/13/javafx-graphics-13-win.jar" path-in-jar="/" />

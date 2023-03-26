@@ -10,15 +10,9 @@ import java.util.stream.Collectors;
 
 public class Prover {
     private final NaturalDeduction nd = new NaturalDeduction();
-    private String path = "C:\\Users\\puzik\\Documents\\myProofs\\";
 
     public void applyRule(String rule, List<Integer> indexes) {
         nd.applyRule(rule, indexes);
-    }
-
-    public void makeProofDir() {
-        //noinspection ResultOfMethodCallIgnored
-        new File(path).mkdirs();
     }
 
     public String saveProof(File file) {
@@ -64,14 +58,6 @@ public class Prover {
 
     public void loadProof(File file) {
         nd.fromFile(file);
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public boolean isNotClosed() {
