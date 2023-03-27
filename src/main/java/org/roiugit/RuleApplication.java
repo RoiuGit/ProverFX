@@ -71,5 +71,6 @@ public class RuleApplication {
                 throw new RuntimeException(e);
             }
         }
+        else throw new IllegalArgumentException();
     }
 }
