@@ -19,23 +19,13 @@ public class RuleInfo {
         return name.get();
     }
 
-    public SimpleStringProperty nameProperty() {
-        return name;
-    }
-
+    @SuppressWarnings("unused")
     public String getSchema() {
         return schema.get();
-    }
-
-    public SimpleStringProperty schemaProperty() {
-        return schema;
     }
 
     public int getNumPremises() {
         return numPremises.get();
     }
 
-    public SimpleIntegerProperty numPremisesProperty() {
-        return numPremises;
-    }
 }

@@ -129,7 +129,8 @@ public class ProverController implements UIConstants {
     public void saveProof() {
         File selectedFile = proofFileManager.saveProof();
         if (selectedFile != null)
-            if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX)) messageLabel.setText(prover.saveProof(selectedFile));
+            if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX))
+                messageLabel.setText(prover.saveProof(selectedFile));
             else EXTENSION_ALERT.show();
     }
 
@@ -139,8 +140,7 @@ public class ProverController implements UIConstants {
             if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX)) {
                 prover.loadProof(selectedFile);
                 updateProofTextArea();
-            }
-            else EXTENSION_ALERT.show();
+            } else EXTENSION_ALERT.show();
         }
 
     }

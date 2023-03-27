@@ -7,6 +7,7 @@ public interface UIConstants {
     String NEW_PROOF_WINDOW_TITLE = "New Proof";
     String PROOF_FILES_EXTENSION = ".proof";
     String PROOF_FILES_EXTENSION_FILTER = "*" + PROOF_FILES_EXTENSION;
+    Alert EXTENSION_ALERT = new Alert(Alert.AlertType.ERROR, "File must be a proof file (" + PROOF_FILES_EXTENSION_FILTER + ").");
     String PROOF_FILES_EXTENSION_REGEX = ".*\\" + PROOF_FILES_EXTENSION;
     String PROOF_FILES_DESCRIPTION = "Proof files";
     String RULES_FXML_PATH = "rules.fxml";
@@ -15,5 +16,4 @@ public interface UIConstants {
     String EMPTY_PROOF_MESSAGE = "Cannot apply rule to an empty proof.";
     String CLOSED_PROOF_MESSAGE = "Cannot apply rule to a closed proof.";
     String CANNOT_ADD_ASSUMPTION_MESSAGE = "Cannot add assumptions to a closed proof.";
-    Alert EXTENSION_ALERT = new Alert(Alert.AlertType.ERROR, "File must be a proof file (" + PROOF_FILES_EXTENSION_FILTER + ").");
 }

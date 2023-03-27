@@ -1,7 +1,7 @@
 package org.roiugit;
 
-import org.roiugit.formula.Formula;
 import org.roiugit.deduction.NaturalDeduction;
+import org.roiugit.formula.Formula;
 
 import java.io.File;
 import java.util.List;

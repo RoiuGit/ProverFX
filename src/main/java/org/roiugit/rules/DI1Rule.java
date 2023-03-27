@@ -21,7 +21,7 @@ public class DI1Rule extends Rule {
     }
 
     @Override
-    public Formula applyRule(List<Formula> premises, Proof proof, String disjunct2) {
+    public Formula applyRule(List<Formula> premises, String disjunct2) {
         Formula result = null;
         if (numPremises == premises.size()) {
             Formula disjunct1 = premises.get(0);
