@@ -27,4 +27,14 @@ public class DI2Rule extends Rule {
         }
         return result;
     }
+
+    @Override
+    public Formula applyRule(List<Formula> premises, Proof proof, String disjunct1) {
+        Formula result = null;
+        if (numPremises == premises.size()) {
+            Formula disjunct2 = premises.get(0);
+            result = new Formula("(%sv%s)".formatted(disjunct1, disjunct2));
+        }
+        return result;
+    }
 }

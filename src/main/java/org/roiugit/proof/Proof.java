@@ -17,12 +17,14 @@ public class Proof {
     private Proof subProof;
     private int endingIndex;
     private boolean isClosed;
-    public Proof(){
+
+    public Proof() {
         isClosed = false;
         assumptionDepth = 0;
         startingIndex = 1;
         endingIndex = 0;
     }
+
     public Proof(List<Formula> premises) {
         this.premises.addAll(premises);
         this.proofSteps.addAll(ProofStep.toSteps(premises));

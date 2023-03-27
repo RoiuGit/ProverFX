@@ -50,8 +50,8 @@ public class ProofStep {
                     .collect(Collectors.joining(", "));
             annotation.append(premisesIndexes);
             annotation.append(")");
-        } else if (isPremise) annotation.append(" (premise)");
-        else annotation.append(" (assumption)");
+        } else if (isPremise) annotation.append("(premise)");
+        else annotation.append("(assumption)");
         return annotation.toString();
     }
 

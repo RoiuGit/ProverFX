@@ -3,91 +3,71 @@ package org.roiugit;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
-public class ProverController {
+public class ProverController implements UIConstants {
+    private final ProofFileManager proofFileManager = new ProofFileManager();
     @FXML
     public TextField assumptionTextField;
+    @FXML
     public ComboBox<String> rulesComboBox;
-    public HBox premisesComboBoxContainer;
-    private final FileChooser proofChooser = new FileChooser();
+    @FXML
+    public HBox ruleInputContainer;
+    @FXML
+    public Menu fileMenu;
+    @FXML
+    public MenuItem saveMenuItem;
     @FXML
     private TextArea proofTextArea;
     @FXML
     private Label messageLabel;
     private Prover prover;
+    private RuleApplication ruleApplication;
 
     public void initialize() {
         prover = new Prover();
-        proofChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Proof files", "*.proof"));
+        ruleApplication = new RuleApplication(prover, ruleInputContainer);
         List<String> ruleNames = prover.getRuleInfo().stream().map(RuleInfo::getName).toList();
         rulesComboBox.setItems(FXCollections.observableArrayList(ruleNames));
-        rulesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> updatePremisesComboBoxes(newValue));
+        rulesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> ruleApplication.updatePremisesComboBoxes(newValue));
+        proofTextArea.textProperty().addListener((observableValue, s, t1) -> messageLabel.setText(""));
+        fileMenu.addEventHandler(Menu.ON_SHOWN, menu_event -> updateSaveMenuItem());
     }
 
-    private void updatePremisesComboBoxes(String ruleName) {
-        premisesComboBoxContainer.getChildren().clear();
-        RuleInfo selectedRule = prover.getRuleInfo().stream().filter(rule -> rule.getName().equals(ruleName)).findFirst().orElseThrow(() -> new IllegalArgumentException("Invalid rule name: " + ruleName));
-        int numPremises = selectedRule.getNumPremises();
-        for (int i = 0; i < numPremises; i++) {
-            ComboBox<Integer> premiseComboBox = new ComboBox<>();
-            if (prover.getMainProof() != null) premiseComboBox.setItems(FXCollections.observableArrayList(IntStream.range(prover.getStartingIndex(), prover.getEndingIndex() + 1).boxed().toList()));
-            premisesComboBoxContainer.getChildren().add(premiseComboBox);
-        }
+    private void updateSaveMenuItem() {
+        saveMenuItem.setDisable(prover.isEmpty());
     }
 
-    private List<Integer> getSelectedPremises(){
-        List<Integer> selectedValues = new ArrayList<>();
-        for (Node child : premisesComboBoxContainer.getChildren()){
-            if (child instanceof ComboBox){
-                @SuppressWarnings("unchecked")
-                ComboBox<Integer> premiseComboBox = (ComboBox<Integer>) child;
-                Integer selectedValue = premiseComboBox.getValue();
-                selectedValues.add(selectedValue);
-            }
-        }
-        return selectedValues;
-    }
     @FXML
     private void applyRule() {
-        String rule = rulesComboBox.getValue();
-        List<Integer> premises = getSelectedPremises();
-        if (prover.isNotClosed()) {
-            try {
-                prover.applyRule(rule, premises);
-                proofTextArea.setText(prover.getMainProof());
-            } catch (Exception e) {
-                messageLabel.setText("Could not apply rule.");
-            }
-        } else {
-            messageLabel.setText("Cannot apply rule to a closed proof.");
+        String ruleName = rulesComboBox.getValue();
+        try {
+            ruleApplication.applyRule(ruleName);
+            updateProofTextArea();
+        } catch (Exception e) {
+            if (prover.isEmpty()) messageLabel.setText(EMPTY_PROOF_MESSAGE);
+            else if (!prover.isNotClosed()) messageLabel.setText(CLOSED_PROOF_MESSAGE);
+            else messageLabel.setText(COULD_NOT_APPLY_RULE_MESSAGE + ruleName);
         }
     }
 
     @FXML
     public void displayRules() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("rules.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(RULES_FXML_PATH));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Rules");
+            stage.setTitle(RULES_WINDOW_TITLE);
             stage.setScene(new Scene(root));
             List<RuleInfo> ruleInfoList = prover.getRuleInfo();
             RulesController controller = loader.getController();
@@ -101,50 +81,66 @@ public class ProverController {
     @FXML
     private void newProof() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("newproof.fxml"));
+            @SuppressWarnings("duplicate")
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(NEW_PROOF_FXML_PATH));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("New Proof");
+            stage.setTitle(NEW_PROOF_WINDOW_TITLE);
             stage.setScene(new Scene(root));
             stage.setMinWidth(150);
             stage.setMinHeight(150);
             stage.setResizable(false);
             NewProofController controller = loader.getController();
-            controller.setOnSubmit(this::handleNewProof);
+            controller.setOnSubmit(this::handleNewProofSubmission);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void handleNewProof(List<String> premises) {
+    private void updateProofTextArea() {
+        if (prover.isNotClosed()) proofTextArea.setText(prover.getMainProof());
+        else proofTextArea.setText("%s\n%s".formatted(prover.getMainProof(), prover.getResult()));
+    }
+
+    private void handleNewProofSubmission(List<String> premises) {
         prover.setMainProof(premises);
-        proofTextArea.setText(prover.getMainProof());
+        updateProofTextArea();
     }
 
-    public void assume() {
+    @FXML
+    public void addAssumption() {
         if (prover.getMainProof() == null) prover.setMainProof();
-        prover.assume(assumptionTextField.getText());
-        proofTextArea.setText(prover.getMainProof());
-        assumptionTextField.clear();
+        if (prover.isNotClosed()) {
+            prover.assume(assumptionTextField.getText());
+            updateProofTextArea();
+            assumptionTextField.clear();
+        } else messageLabel.setText(CANNOT_ADD_ASSUMPTION_MESSAGE);
     }
 
+    @FXML
     public void endProof() {
-        String result = prover.endProof();
-        proofTextArea.setText("%s\n%s".formatted(prover.getMainProof(), result));
+        prover.endProof();
+        updateProofTextArea();
+
     }
 
     public void saveProof() {
-        File selectedFile = proofChooser.showSaveDialog(new Stage());
-        if (selectedFile != null) messageLabel.setText(prover.saveProof(selectedFile));
+        File selectedFile = proofFileManager.saveProof();
+        if (selectedFile != null)
+            if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX)) messageLabel.setText(prover.saveProof(selectedFile));
+            else EXTENSION_ALERT.show();
     }
 
     public void loadProof() {
-        File selectedFile = proofChooser.showOpenDialog(new Stage());
+        File selectedFile = proofFileManager.loadProof();
         if (selectedFile != null) {
-            prover.loadProof(selectedFile);
-            proofTextArea.setText(prover.getMainProof());
+            if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX)) {
+                prover.loadProof(selectedFile);
+                updateProofTextArea();
+            }
+            else EXTENSION_ALERT.show();
         }
 
     }

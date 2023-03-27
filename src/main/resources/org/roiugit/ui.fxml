@@ -8,9 +8,9 @@
             fx:controller="org.roiugit.ProverController">
     <top>
         <MenuBar>
-            <Menu text="File">
+            <Menu fx:id="fileMenu" text="File">
                 <MenuItem text="New..." onAction="#newProof"/>
-                <MenuItem text="Save..." onAction="#saveProof"/>
+                <MenuItem fx:id="saveMenuItem" text="Save..." onAction="#saveProof"/>
                 <MenuItem text="Load..." onAction="#loadProof"/>
             </Menu>
             <Menu text="Help">
@@ -19,16 +19,16 @@
         </MenuBar>
     </top>
     <center>
-        <TextArea fx:id="proofTextArea" editable="false"/>
+        <TextArea fx:id="proofTextArea" editable="false" stylesheets="@styles.css"/>
     </center>
     <bottom>
         <VBox>
             <HBox spacing="10" alignment="CENTER">
                 <ComboBox fx:id="rulesComboBox"/>
-                <HBox fx:id="premisesComboBoxContainer" spacing="5"/>
+                <HBox fx:id="ruleInputContainer" spacing="5"/>
                 <Button text="Apply Rule" onAction="#applyRule"/>
                 <TextField fx:id="assumptionTextField" promptText="Enter an assumption"/>
-                <Button text="Assume" onAction="#assume"/>
+                <Button text="Assume" onAction="#addAssumption"/>
                 <Button text="End Proof" onAction="#endProof"/>
             </HBox>
             <Label fx:id="messageLabel"/>

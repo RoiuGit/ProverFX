@@ -1,4 +1,4 @@
-package org.roiugit.naturaldeduction;
+package org.roiugit.deduction;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,15 +35,28 @@ public class NaturalDeduction {
         this.ruleMap.put(rule.getRuleName(), rule);
     }
 
-    public void applyRule(String rule, List<Integer> premisesIndexes) {
+    public void applyRule(String rule, List<Integer> indexes) {
         Rule ruleInstance = ruleMap.get(rule);
-        List<Formula> premises = readPremises(premisesIndexes);
+        List<Formula> premises = readPremises(indexes);
         Formula result = ruleInstance.applyRule(premises, mainProof);
         if (result != null) {
-            mainProof.append(new ProofStep(mainProof.getEndingIndex() + 1, premisesIndexes, premises, result, ruleInstance));
+            mainProof.append(new ProofStep(mainProof.getEndingIndex() + 1, indexes, premises, result, ruleInstance));
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    public void applyRule(String rule, List<Integer> indexes, String expression) {
+        Rule ruleInstance = ruleMap.get(rule);
+        List<Formula> premises = readPremises(indexes);
+        if (ruleInstance instanceof DI1Rule || ruleInstance instanceof DI2Rule) {
+            Formula result = ruleInstance.applyRule(premises, mainProof, expression);
+            if (result != null) {
+                mainProof.append(new ProofStep(mainProof.getEndingIndex() + 1, indexes, premises, result, ruleInstance));
+            } else {
+                throw new IllegalArgumentException();
+            }
+        } else throw new UnsupportedOperationException("This rule does not support user input.");
     }
 
     public void toFile(File file) {
@@ -87,6 +100,10 @@ public class NaturalDeduction {
         mainProof.close();
     }
 
+    public boolean isEmpty() {
+        return mainProof == null;
+    }
+
     public boolean isNotClosed() {
         return mainProof.isNotClosed();
     }
@@ -112,7 +129,8 @@ public class NaturalDeduction {
     public void setMainProof(List<Formula> premises) {
         this.mainProof = new Proof(premises);
     }
-    public void setMainProof(){
+
+    public void setMainProof() {
         this.mainProof = new Proof();
     }
 
@@ -123,4 +141,5 @@ public class NaturalDeduction {
     public int getEndingIndex() {
         return mainProof.getEndingIndex();
     }
+
 }

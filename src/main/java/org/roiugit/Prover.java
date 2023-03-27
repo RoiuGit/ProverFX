@@ -1,7 +1,7 @@
 package org.roiugit;
 
 import org.roiugit.formula.Formula;
-import org.roiugit.naturaldeduction.NaturalDeduction;
+import org.roiugit.deduction.NaturalDeduction;
 
 import java.io.File;
 import java.util.List;
@@ -38,14 +38,17 @@ public class Prover {
     public void setMainProof(List<String> expressions) {
         nd.setMainProof(expressions.stream().map(Formula::new).collect(Collectors.toList()));
     }
-    public void setMainProof(){
+
+    public void setMainProof() {
         nd.setMainProof();
     }
 
-    public String endProof() {
-        String result = nd.getResult();
+    public void endProof() {
         nd.close();
-        return result;
+    }
+
+    public String getResult() {
+        return nd.getResult();
     }
 
     public int getStartingIndex() {
@@ -62,5 +65,13 @@ public class Prover {
 
     public boolean isNotClosed() {
         return nd.isNotClosed();
+    }
+
+    public boolean isEmpty() {
+        return nd.isEmpty();
+    }
+
+    public void applyRule(String rule, List<Integer> indexes, String expression) {
+        nd.applyRule(rule, indexes, expression);
     }
 }

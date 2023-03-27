@@ -12,6 +12,10 @@ public abstract class Rule {
 
     public abstract Formula applyRule(List<Formula> premises, Proof proof);
 
+    public Formula applyRule(List<Formula> premises, Proof proof, String expression) {
+        throw new UnsupportedOperationException("This rule does not support user input");
+    }
+
     public int getNumPremises() {
         return numPremises;
     }
