@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
             fx:controller="org.roiugit.NewProofController">
-    <VBox fx:id="contentVBox" spacing="10" alignment="CENTER">
+    <VBox fx:id="newProofVBox" spacing="10" alignment="CENTER">
         <TextField fx:id="premiseField" promptText="Enter a premise"/>
         <Button fx:id="addPremiseButton" text="Add Premise" onAction="#addPremise"/>
         <Button fx:id="createProofButton" text="Create Proof" onAction="#createProof"/>

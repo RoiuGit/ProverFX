@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -26,6 +27,8 @@ public class ProverController implements UIConstants {
     public Menu fileMenu;
     @FXML
     public MenuItem saveMenuItem;
+    @FXML
+    public VBox BottomVBox;
     @FXML
     private TextArea proofTextArea;
     @FXML

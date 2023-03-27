@@ -70,7 +70,6 @@ public class RuleApplication {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
-        else throw new IllegalArgumentException();
+        } else throw new IllegalArgumentException();
     }
 }

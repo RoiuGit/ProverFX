@@ -131,10 +131,16 @@ public class Proof {
         int numberFormat = Integer.toString(getEndingIndex()).length() + 1;
         Optional<Integer> maxFormulaLength = proofSteps.stream().map(ProofStep::getFormula).map(Formula::toString).map(String::length).max(Integer::compareTo);
         Optional<Integer> maxDepth = IntStream.rangeClosed(startingIndex, endingIndex).boxed().toList().stream().map(this::getLineAssumptionDepth).max(Integer::compareTo);
-        int formulaFormat = maxFormulaLength.orElse(10) + maxDepth.orElse(0) + 1;
+        int formulaFormat = numberFormat + maxFormulaLength.orElse(10) + maxDepth.orElse(0) + 1;
+        String format = "%-" + formulaFormat + "s %s%n";
         for (ProofStep proofStep : proofSteps) {
             int depth = getLineAssumptionDepth(proofStep.getIndex());
-            proof.append(("%-" + (formulaFormat + numberFormat) + "s%s\n").formatted("%d.%s %s".formatted(proofStep.getIndex(), "|".repeat(Math.max(0, depth)), proofStep.getFormula()), proofStep.getAnnotation()));
+            String lineNumber = "%d.".formatted(proofStep.getIndex());
+            String depthBars = "|".repeat(Math.max(0, depth));
+            String formula = proofStep.getFormula().toString();
+            String formulaColumn = "%s%s %s".formatted(lineNumber, depthBars, formula);
+            String annotation = proofStep.getAnnotation();
+            proof.append(format.formatted(formulaColumn, annotation));
         }
 
         return proof.toString();

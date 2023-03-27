@@ -1,4 +1,11 @@
-* {
+.text-area {
     -fx-font-family: "monospace";
     -fx-font-size: 30;
+}
+
+#BottomVBox {
+    -fx-padding: 15 0 0 0;
+}
+#messageLabel{
+    -fx-padding: 5;
 }

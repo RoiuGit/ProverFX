@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
-            fx:controller="org.roiugit.ProverController">
+            fx:controller="org.roiugit.ProverController" stylesheets="@styles.css">
     <top>
         <MenuBar>
             <Menu fx:id="fileMenu" text="File">
@@ -19,10 +19,10 @@
         </MenuBar>
     </top>
     <center>
-        <TextArea fx:id="proofTextArea" editable="false" stylesheets="@styles.css"/>
+        <TextArea fx:id="proofTextArea" editable="false"/>
     </center>
     <bottom>
-        <VBox>
+        <VBox fx:id="BottomVBox">
             <HBox spacing="10" alignment="CENTER">
                 <ComboBox fx:id="rulesComboBox"/>
                 <HBox fx:id="ruleInputContainer" spacing="5"/>

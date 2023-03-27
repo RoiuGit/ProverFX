@@ -3,7 +3,6 @@ package org.roiugit;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -17,7 +16,7 @@ public class NewProofController {
     Consumer<List<String>> onSubmit;
     private List<String> premises;
     @FXML
-    private VBox contentVBox;
+    private VBox newProofVBox;
     @FXML
     private Button addPremiseButton;
     @FXML
@@ -26,7 +25,6 @@ public class NewProofController {
     @FXML
     private void initialize() {
         premises = new ArrayList<>();
-        contentVBox.getChildren().forEach(child -> VBox.setVgrow(child, Priority.ALWAYS));
     }
 
     @FXML
