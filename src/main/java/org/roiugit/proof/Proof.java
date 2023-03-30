@@ -5,7 +5,6 @@ import org.roiugit.formula.Formula;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Proof {
@@ -56,18 +55,6 @@ public class Proof {
     public void assume(Formula assumption) {
         addSubProof();
         append(new ProofStep(endingIndex + 1, assumption, 'a'));
-    }
-
-    public String getResult() {
-        if (subProof != null && subProof.isNotClosed()) return null;
-        StringBuilder result = new StringBuilder();
-        String premisesStr = premises.stream()
-                .map(Formula::toString)
-                .collect(Collectors.joining(", "));
-        result.append(premisesStr);
-        result.append(" => ");
-        result.append(proofSteps.get(proofSteps.size() - 1).getFormula());
-        return result.toString();
     }
 
     public int getLineAssumptionDepth(int lineNumber) {
@@ -124,6 +111,10 @@ public class Proof {
 
     public int getEndingIndex() {
         return endingIndex;
+    }
+
+    public List<Formula> getPremises() {
+        return premises;
     }
 
     public String toString() {

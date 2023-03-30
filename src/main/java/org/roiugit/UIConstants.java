@@ -1,13 +1,11 @@
 package org.roiugit;
 
-import javafx.scene.control.Alert;
-
 public interface UIConstants {
     String RULES_WINDOW_TITLE = "Rules";
     String NEW_PROOF_WINDOW_TITLE = "New Proof";
     String PROOF_FILES_EXTENSION = ".proof";
     String PROOF_FILES_EXTENSION_FILTER = "*" + PROOF_FILES_EXTENSION;
-    Alert EXTENSION_ALERT = new Alert(Alert.AlertType.ERROR, "File must be a proof file (" + PROOF_FILES_EXTENSION_FILTER + ").");
+    String EXTENSION_ALERT = "File must be a proof file (" + PROOF_FILES_EXTENSION_FILTER + ")";
     String PROOF_FILES_EXTENSION_REGEX = ".*\\" + PROOF_FILES_EXTENSION;
     String PROOF_FILES_DESCRIPTION = "Proof files";
     String RULES_FXML_PATH = "rules.fxml";

@@ -13,6 +13,9 @@
                 <MenuItem fx:id="saveMenuItem" text="Save..." onAction="#saveProof"/>
                 <MenuItem text="Load..." onAction="#loadProof"/>
             </Menu>
+            <Menu fx:id="deductionMenu" text="Deduction">
+                <MenuItem fx:id="setTargetMenuItem" text="Set target..." onAction="#setTarget"/>
+            </Menu>
             <Menu text="Help">
                 <MenuItem text="Rules" onAction="#displayRules"/>
             </Menu>
@@ -22,7 +25,7 @@
         <TextArea fx:id="proofTextArea" editable="false"/>
     </center>
     <bottom>
-        <VBox fx:id="BottomVBox">
+        <VBox id="BottomVBox">
             <HBox spacing="10" alignment="CENTER">
                 <ComboBox fx:id="rulesComboBox"/>
                 <HBox fx:id="ruleInputContainer" spacing="5"/>

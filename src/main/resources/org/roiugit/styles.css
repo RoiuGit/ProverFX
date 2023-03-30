@@ -6,6 +6,7 @@
 #BottomVBox {
     -fx-padding: 15 0 0 0;
 }
-#messageLabel{
+
+#messageLabel {
     -fx-padding: 5;
 }
