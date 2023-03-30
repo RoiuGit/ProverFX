@@ -5,11 +5,14 @@ import org.roiugit.formula.Formula;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
 public class Prover {
     private final NaturalDeduction nd = new NaturalDeduction();
+
+    private String target;
 
     public void applyRule(String rule, List<Integer> indexes) {
         nd.applyRule(rule, indexes);
@@ -48,7 +51,25 @@ public class Prover {
     }
 
     public String getResult() {
-        return nd.getResult();
+        StringBuilder result = new StringBuilder();
+        Formula resultFormula = nd.getResult();
+        String premises = nd.getPremises().stream().map(Formula::toString).collect(Collectors.joining(", "));
+        result.append(premises);
+        result.append(" => ");
+        result.append(resultFormula.toString());
+        return result.toString();
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public boolean targetReached() {
+        return Objects.equals(nd.getResult() != null ? nd.getResult().toString() : "", target);
     }
 
     public int getStartingIndex() {

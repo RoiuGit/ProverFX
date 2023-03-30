@@ -109,8 +109,14 @@ public abstract class DeductionSystem {
         mainProof.assume(assumption);
     }
 
-    public String getResult() {
-        return mainProof.getResult();
+    public Formula getResult() {
+        Proof subProof = mainProof.getSubProof();
+        if (subProof != null && subProof.isNotClosed()) return null;
+        return mainProof.getFormula(mainProof.getEndingIndex() - 1);
+    }
+
+    public List<Formula> getPremises() {
+        return mainProof.getPremises();
     }
 
     public List<Rule> getRuleList() { //returns list of rules, sorted by name

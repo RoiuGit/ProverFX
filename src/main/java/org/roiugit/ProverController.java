@@ -30,6 +30,11 @@ public class ProverController implements UIConstants {
     @FXML
     public VBox BottomVBox;
     @FXML
+    public MenuItem setTargetMenuItem;
+    @FXML
+    public Menu deductionMenu;
+    Alert extenstion_alert = new Alert(Alert.AlertType.ERROR, EXTENSION_ALERT);
+    @FXML
     private TextArea proofTextArea;
     @FXML
     private Label messageLabel;
@@ -42,8 +47,13 @@ public class ProverController implements UIConstants {
         List<String> ruleNames = prover.getRuleInfo().stream().map(RuleInfo::getName).toList();
         rulesComboBox.setItems(FXCollections.observableArrayList(ruleNames));
         rulesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> ruleApplication.updatePremisesComboBoxes(newValue));
-        proofTextArea.textProperty().addListener((observableValue, s, t1) -> messageLabel.setText(""));
         fileMenu.addEventHandler(Menu.ON_SHOWN, menu_event -> updateSaveMenuItem());
+        deductionMenu.addEventHandler(Menu.ON_SHOWN, menu_event -> updateSetTargetMenuItem());
+        extenstion_alert.setHeaderText(null);
+    }
+
+    private void updateSetTargetMenuItem() {
+        setTargetMenuItem.setDisable(prover.isEmpty() || !prover.isNotClosed());
     }
 
     private void updateSaveMenuItem() {
@@ -103,7 +113,13 @@ public class ProverController implements UIConstants {
     }
 
     private void updateProofTextArea() {
-        if (prover.isNotClosed()) proofTextArea.setText(prover.getMainProof());
+        messageLabel.setText("");
+        if (prover.targetReached()) {
+            messageLabel.setText("Target %s reached.".formatted(prover.getTarget()));
+            prover.endProof();
+        }
+        if (prover.isNotClosed())
+            proofTextArea.setText("%s%s".formatted(prover.getTarget() != null ? "Target:%s%n".formatted(prover.getTarget()) : "", prover.getMainProof()));
         else proofTextArea.setText("%s\n%s".formatted(prover.getMainProof(), prover.getResult()));
     }
 
@@ -126,7 +142,6 @@ public class ProverController implements UIConstants {
     public void endProof() {
         prover.endProof();
         updateProofTextArea();
-
     }
 
     public void saveProof() {
@@ -134,7 +149,7 @@ public class ProverController implements UIConstants {
         if (selectedFile != null)
             if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX))
                 messageLabel.setText(prover.saveProof(selectedFile));
-            else EXTENSION_ALERT.show();
+            else extenstion_alert.show();
     }
 
     public void loadProof() {
@@ -143,8 +158,21 @@ public class ProverController implements UIConstants {
             if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX)) {
                 prover.loadProof(selectedFile);
                 updateProofTextArea();
-            } else EXTENSION_ALERT.show();
+            } else {
+                extenstion_alert.show();
+            }
         }
 
+    }
+
+    public void setTarget() {
+        String target;
+        TextInputDialog targetInputDialog = new TextInputDialog("Enter a target for your proof.");
+        targetInputDialog.setTitle("Set Target");
+        targetInputDialog.setHeaderText(null);
+        targetInputDialog.showAndWait();
+        target = targetInputDialog.getResult();
+        prover.setTarget(target);
+        updateProofTextArea();
     }
 }
