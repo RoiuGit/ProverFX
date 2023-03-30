@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 public class Prover {
     private final NaturalDeduction nd = new NaturalDeduction();
 
-    private String target;
-
     public void applyRule(String rule, List<Integer> indexes) {
         nd.applyRule(rule, indexes);
     }
@@ -61,15 +59,18 @@ public class Prover {
     }
 
     public String getTarget() {
-        return target;
+        Formula target = nd.getTarget();
+        if (target != null) return nd.getTarget().toString();
+        else return null;
     }
 
     public void setTarget(String target) {
-        this.target = target;
+        nd.setTarget(target);
     }
 
     public boolean targetReached() {
-        return Objects.equals(nd.getResult() != null ? nd.getResult().toString() : "", target);
+        if (nd.getTarget() != null && nd.getResult() != null) return Objects.equals(nd.getResult(), nd.getTarget());
+        else return false;
     }
 
     public int getStartingIndex() {

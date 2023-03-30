@@ -14,4 +14,5 @@ public interface UIConstants {
     String EMPTY_PROOF_MESSAGE = "Cannot apply rule to an empty proof.";
     String CLOSED_PROOF_MESSAGE = "Cannot apply rule to a closed proof.";
     String CANNOT_ADD_ASSUMPTION_MESSAGE = "Cannot add assumptions to a closed proof.";
+    String CANNOT_ADD_FORMULA_MESSAGE = "The input must be a valid formula.";
 }

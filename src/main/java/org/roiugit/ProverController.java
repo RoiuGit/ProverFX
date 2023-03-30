@@ -116,21 +116,29 @@ public class ProverController implements UIConstants {
             prover.endProof();
         }
         if (prover.isNotClosed())
-            proofTextArea.setText("%s%s".formatted(prover.getTarget() != null ? "Target:%s%n".formatted(prover.getTarget()) : "", prover.getMainProof()));
+            proofTextArea.setText("%s%s".formatted(prover.getTarget() != null ? "Target: %s%n".formatted(prover.getTarget()) : "", prover.getMainProof()));
         else proofTextArea.setText("%s\n%s".formatted(prover.getMainProof(), prover.getResult()));
     }
 
     private void handleNewProofSubmission(List<String> premises) {
-        prover.setMainProof(premises);
-        updateProofTextArea();
+        try {
+            prover.setMainProof(premises);
+            updateProofTextArea();
+        } catch (IllegalArgumentException e) {
+            messageLabel.setText(CANNOT_ADD_FORMULA_MESSAGE);
+        }
     }
 
     @FXML
     public void addAssumption() {
         if (prover.getMainProof() == null) prover.setMainProof();
         if (prover.isNotClosed()) {
-            prover.assume(assumptionTextField.getText());
-            updateProofTextArea();
+            try {
+                prover.assume(assumptionTextField.getText());
+                updateProofTextArea();
+            } catch (IllegalArgumentException e) {
+                messageLabel.setText(CANNOT_ADD_FORMULA_MESSAGE);
+            }
             assumptionTextField.clear();
         } else messageLabel.setText(CANNOT_ADD_ASSUMPTION_MESSAGE);
     }
@@ -169,7 +177,12 @@ public class ProverController implements UIConstants {
         targetInputDialog.setHeaderText(null);
         targetInputDialog.showAndWait();
         target = targetInputDialog.getResult();
-        prover.setTarget(target);
-        updateProofTextArea();
+        try {
+            prover.setTarget(target);
+            updateProofTextArea();
+        } catch (Exception e) {
+            e.printStackTrace();
+            messageLabel.setText(CANNOT_ADD_FORMULA_MESSAGE);
+        }
     }
 }

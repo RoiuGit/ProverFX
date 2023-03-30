@@ -3,6 +3,10 @@
     -fx-font-size: 30;
 }
 
+.table-view {
+    -fx-font-family: "monospace";
+}
+
 #BottomVBox {
     -fx-padding: 15 0 0 0;
 }

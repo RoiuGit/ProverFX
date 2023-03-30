@@ -8,9 +8,10 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class Proof {
-    private final List<Proof> subProofList = new ArrayList<>();
     private final int assumptionDepth;
     private final int startingIndex;
+    private final List<Proof> subProofList = new ArrayList<>();
+    private Formula target;
     private final List<ProofStep> proofSteps = new ArrayList<>();
     private final List<Formula> premises = new ArrayList<>();
     private Proof subProof;
@@ -115,6 +116,14 @@ public class Proof {
 
     public List<Formula> getPremises() {
         return premises;
+    }
+
+    public Formula getTarget() {
+        return target;
+    }
+
+    public void setTarget(Formula target) {
+        this.target = target;
     }
 
     public String toString() {

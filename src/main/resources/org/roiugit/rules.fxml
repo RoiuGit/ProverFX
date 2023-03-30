@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
-            fx:controller="org.roiugit.RulesController">
+            fx:controller="org.roiugit.RulesController" stylesheets="@styles.css">
     <center>
         <TableView fx:id="rulesTableView">
             <columns>

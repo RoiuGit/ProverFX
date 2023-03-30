@@ -111,7 +111,7 @@ public abstract class DeductionSystem {
 
     public Formula getResult() {
         Proof subProof = mainProof.getSubProof();
-        if (subProof != null && subProof.isNotClosed()) return null;
+        if (subProof != null && subProof.isNotClosed() || mainProof.getEndingIndex() == 0) return null;
         return mainProof.getFormula(mainProof.getEndingIndex() - 1);
     }
 
@@ -143,5 +143,13 @@ public abstract class DeductionSystem {
 
     public int getEndingIndex() {
         return mainProof.getEndingIndex();
+    }
+
+    public Formula getTarget() {
+        return mainProof.getTarget();
+    }
+
+    public void setTarget(String expression) {
+        mainProof.setTarget(new Formula(expression));
     }
 }
