@@ -32,11 +32,6 @@ public class ProverController implements UIConstants {
     public Menu deductionMenu;
     Alert extenstion_alert = new Alert(Alert.AlertType.ERROR, EXTENSION_ALERT);
     @FXML
-    public MenuItem setTargetMenuItem;
-    @FXML
-    public Menu deductionMenu;
-    Alert extenstion_alert = new Alert(Alert.AlertType.ERROR, EXTENSION_ALERT);
-    @FXML
     private TextArea proofTextArea;
     @FXML
     private Label messageLabel;
