@@ -20,11 +20,11 @@ public class IIRule extends Rule {
     public Formula applyRule(List<Formula> premises, Proof proof) {
         Formula result = null;
         if (premises.size() == numPremises) {
-            if ((proof.getSubProof() == null || !proof.getSubProof().isNotClosed()) && proof.getAssumptionDepth() > 0) {
+            if ((proof.getActiveSubproof() == null || !proof.getActiveSubproof().isNotClosed()) && proof.getAssumptionDepth() > 0) {
                 Formula antecedent = premises.get(0);
                 result = new Formula("(%s->%s)".formatted(proof.getFormula(0), antecedent));
                 proof.close();
-            } else if (proof.getSubProof().isNotClosed()) result = applyRule(premises, proof.getSubProof());
+            } else if (proof.getActiveSubproof().isNotClosed()) result = applyRule(premises, proof.getActiveSubproof());
         }
         return result;
     }

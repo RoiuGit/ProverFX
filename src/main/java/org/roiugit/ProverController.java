@@ -30,7 +30,9 @@ public class ProverController implements UIConstants {
     public MenuItem setTargetMenuItem;
     @FXML
     public Menu deductionMenu;
-    Alert extenstion_alert = new Alert(Alert.AlertType.ERROR, EXTENSION_ALERT);
+    @FXML
+    public MenuItem minimizeProofMenuItem;
+    Alert fileExtensionAlert = new Alert(Alert.AlertType.ERROR, EXTENSION_ALERT);
     @FXML
     private TextArea proofTextArea;
     @FXML
@@ -46,7 +48,8 @@ public class ProverController implements UIConstants {
         rulesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> ruleApplication.updatePremisesComboBoxes(newValue));
         fileMenu.addEventHandler(Menu.ON_SHOWN, menu_event -> updateSaveMenuItem());
         deductionMenu.addEventHandler(Menu.ON_SHOWN, menu_event -> updateSetTargetMenuItem());
-        extenstion_alert.setHeaderText(null);
+        deductionMenu.addEventHandler(Menu.ON_SHOWN, menu_event -> updateMinimizeProofMenuItem());
+        fileExtensionAlert.setHeaderText(null);
     }
 
     private void updateSetTargetMenuItem() {
@@ -55,6 +58,10 @@ public class ProverController implements UIConstants {
 
     private void updateSaveMenuItem() {
         saveMenuItem.setDisable(prover.isEmpty());
+    }
+
+    private void updateMinimizeProofMenuItem() {
+        minimizeProofMenuItem.setDisable(prover.isEmpty() || prover.isNotClosed());
     }
 
     @FXML
@@ -154,7 +161,7 @@ public class ProverController implements UIConstants {
         if (selectedFile != null)
             if (selectedFile.getName().matches(PROOF_FILES_EXTENSION_REGEX))
                 messageLabel.setText(prover.saveProof(selectedFile));
-            else extenstion_alert.show();
+            else fileExtensionAlert.show();
     }
 
     public void loadProof() {
@@ -164,7 +171,7 @@ public class ProverController implements UIConstants {
                 prover.loadProof(selectedFile);
                 updateProofTextArea();
             } else {
-                extenstion_alert.show();
+                fileExtensionAlert.show();
             }
         }
 
@@ -185,4 +192,15 @@ public class ProverController implements UIConstants {
             messageLabel.setText(CANNOT_ADD_FORMULA_MESSAGE);
         }
     }
+
+    public void minimizeProof() {
+        if (!prover.isEmpty() && !prover.isNotClosed()) {
+            prover.minimizeProof();
+            updateProofTextArea();
+            messageLabel.setText("Proof minimized successfully.");
+        } else {
+            messageLabel.setText("Cannot minimize an empty or open proof.");
+        }
+    }
+
 }

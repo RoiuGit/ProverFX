@@ -93,6 +93,10 @@ public class Prover {
         return nd.isEmpty();
     }
 
+    public void minimizeProof() {
+        nd.minimizeProof();
+    }
+
     public void applyRule(String rule, List<Integer> indexes, String expression) {
         nd.applyRule(rule, indexes, expression);
     }

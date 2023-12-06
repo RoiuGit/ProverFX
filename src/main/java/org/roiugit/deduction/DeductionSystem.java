@@ -50,6 +50,10 @@ public abstract class DeductionSystem {
         } else throw new UnsupportedOperationException("This rule does not support user input.");
     }
 
+    public void assume(Formula assumption) {
+        mainProof.assume(assumption);
+    }
+
     private boolean premisesAreNotClosed(List<Integer> indexes) {
         boolean belongToAClosedProof = false;
         for (Integer index : indexes) belongToAClosedProof = mainProof.belongsToClosedProof(index);
@@ -97,20 +101,16 @@ public abstract class DeductionSystem {
         mainProof.close();
     }
 
-    public boolean isEmpty() {
-        return mainProof == null;
-    }
-
     public boolean isNotClosed() {
         return mainProof.isNotClosed();
     }
 
-    public void assume(Formula assumption) {
-        mainProof.assume(assumption);
+    public boolean isEmpty() {
+        return mainProof == null;
     }
 
     public Formula getResult() {
-        Proof subProof = mainProof.getSubProof();
+        Proof subProof = mainProof.getActiveSubproof();
         if (subProof != null && subProof.isNotClosed() || mainProof.getEndingIndex() == 0) return null;
         return mainProof.getFormula(mainProof.getEndingIndex() - 1);
     }
@@ -151,5 +151,9 @@ public abstract class DeductionSystem {
 
     public void setTarget(String expression) {
         mainProof.setTarget(new Formula(expression));
+    }
+
+    public void minimizeProof() {
+        mainProof.minimizeProof();
     }
 }

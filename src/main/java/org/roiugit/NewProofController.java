@@ -2,6 +2,7 @@ package org.roiugit;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -11,16 +12,18 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class NewProofController {
-    @FXML
-    public TextField premiseField;
     Consumer<List<String>> onSubmit;
-    private List<String> premises;
     @FXML
     private VBox newProofVBox;
     @FXML
-    private Button addPremiseButton;
+    private TextField premiseField;
+    @FXML
+    private VBox premisesListVBox; // VBox to display the list of premises
     @FXML
     private Button createProofButton;
+    @FXML
+    private Button addPremiseButton;
+    private List<String> premises;
 
     @FXML
     private void initialize() {
@@ -29,8 +32,17 @@ public class NewProofController {
 
     @FXML
     private void addPremise() {
-        premises.add(premiseField.getText());
+        String premise = premiseField.getText();
+        premises.add(premise);
+        updatePremisesList(); // Update the list view
         premiseField.clear();
+    }
+
+    private void updatePremisesList() {
+        premisesListVBox.getChildren().clear(); // Clear the current list
+        for (String premise : premises) {
+            premisesListVBox.getChildren().add(new Label(premise));
+        }
     }
 
     @FXML
@@ -43,5 +55,4 @@ public class NewProofController {
     public void setOnSubmit(Consumer<List<String>> onSubmit) {
         this.onSubmit = onSubmit;
     }
-
 }

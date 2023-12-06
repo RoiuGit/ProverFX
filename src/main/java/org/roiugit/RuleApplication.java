@@ -22,7 +22,9 @@ public class RuleApplication {
 
     public void updatePremisesComboBoxes(String ruleName) {
         ruleInputContainer.getChildren().clear();
-        RuleInfo selectedRule = prover.getRuleInfo().stream().filter(rule -> rule.getName().equals(ruleName)).findFirst().orElseThrow(() -> new IllegalArgumentException("Invalid rule name: " + ruleName));
+        RuleInfo selectedRule = prover.getRuleInfo().stream().
+                filter(rule -> rule.getName().equals(ruleName)).
+                findFirst().orElseThrow(() -> new IllegalArgumentException("Invalid rule name: " + ruleName));
         int numPremises = selectedRule.getNumPremises();
         for (int i = 0; i < numPremises; i++) {
             ComboBox<Integer> premiseComboBox = new ComboBox<>();

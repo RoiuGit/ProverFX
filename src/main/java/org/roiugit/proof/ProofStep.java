@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ProofStep {
-    private final int index;
     private final Formula formula;
-    private final Map<Integer, Formula> premises = new LinkedHashMap<>();
-    private Rule ruleApplied;
+    private final Rule ruleApplied;
+    private int index;
+    private Map<Integer, Formula> premises = new LinkedHashMap<>();
     private boolean isPremise;
     private boolean isAssumption;
 
@@ -31,9 +31,10 @@ public class ProofStep {
         this.formula = formula;
         if (mode == 'p') isPremise = true;
         if (mode == 'a') isAssumption = true;
+        ruleApplied = null;
     }
 
-    public static List<ProofStep> toSteps(List<Formula> formulas) {
+    public static List<ProofStep> toStepsAsPremises(List<Formula> formulas) {
         List<ProofStep> proofStepList = new ArrayList<>();
         for (int i = 0; i < formulas.size(); i++) {
             proofStepList.add(new ProofStep(i + 1, formulas.get(i), 'p'));
@@ -61,6 +62,30 @@ public class ProofStep {
 
     public int getIndex() {
         return index;
+    }
+
+    public static ProofStep findByIndex(List<ProofStep> steps, Integer index) {
+        return steps.stream().filter(step -> step.getIndex() == index).findFirst().orElse(null);
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public Map<Integer, Formula> getPremises() {
+        return premises;
+    }
+
+    public void setPremises(Map<Integer, Formula> premises) {
+        this.premises = premises;
+    }
+
+    public Rule getRule() {
+        return ruleApplied;
+    }
+
+    public boolean isPremise() {
+        return isPremise;
     }
 
 }

@@ -27,26 +27,6 @@ public class Formula {
         return expression;
     }
 
-    private boolean isValid() {
-        boolean containsValidCharacters;
-        String expression = this.expression.toUpperCase();
-        if (!isAtomicFormula) containsValidCharacters = expression.matches("^\\((([A-Z0-9()~&]|->)+)(->|V|&)" +
-                "(([A-Z0-9()~&]|->)+)\\)$");
-        else containsValidCharacters = expression.matches("^([A-Z&~()]|->)+$");
-        return containsValidCharacters;
-    }
-
-    private boolean isBalanced() {
-        int openParens = 0;
-        for (int i = 0; i < expression.length(); i++) {
-            switch (expression.charAt(i)) {
-                case '(' -> openParens++;
-                case ')' -> openParens--;
-            }
-        }
-        return openParens == 0;
-    }
-
     private void evaluate() {
         if (!isBalanced()) throw new IllegalArgumentException();
         int openParens = -1;
@@ -90,6 +70,26 @@ public class Formula {
             antecedent = this;
         }
         if (!isValid()) throw new IllegalArgumentException();
+    }
+
+    private boolean isBalanced() {
+        int openParens = 0;
+        for (int i = 0; i < expression.length(); i++) {
+            switch (expression.charAt(i)) {
+                case '(' -> openParens++;
+                case ')' -> openParens--;
+            }
+        }
+        return openParens == 0;
+    }
+
+    private boolean isValid() {
+        boolean containsValidCharacters;
+        String expression = this.expression.toUpperCase();
+        if (!isAtomicFormula) containsValidCharacters = expression.matches("^\\((([A-Z0-9()~&]|->)+)(->|V|&)" +
+                "(([A-Z0-9()~&]|->)+)\\)$");
+        else containsValidCharacters = expression.matches("^([A-Z&~()]|->)+$");
+        return containsValidCharacters;
     }
 
     public String getSign() {
